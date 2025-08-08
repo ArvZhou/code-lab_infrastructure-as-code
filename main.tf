@@ -29,6 +29,16 @@ resource "null_resource" "install_docker_k3s" {
     user     = "arvin"
     password = var.ssh_password
   }
+#   provisioner "file" {
+#     source      = "${path.module}/sudoers-arvin-nopasswd"
+#     destination = "/etc/sudoers.d/arvin-nopasswd"
+#   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod 440 /etc/sudoers.d/arvin-nopasswd"
+    ]
+  }
 
   provisioner "file" {
     source      = "${path.module}/k3s.sh"
