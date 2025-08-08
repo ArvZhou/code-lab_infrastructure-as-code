@@ -30,6 +30,11 @@ resource "null_resource" "install_docker_k3s" {
     password = var.ssh_password
   }
 
+  provisioner "file" {
+    source      = "${path.module}/k3s.sh"
+    destination = "/tmp/k3s_install/k3s.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "if ! command -v docker >/dev/null 2>&1; then",
@@ -46,19 +51,15 @@ resource "null_resource" "install_docker_k3s" {
       "fi",
 
       "if ! command -v k3s >/dev/null 2>&1; then",
-      "  curl -sfL https://get.k3s.io | sh -",
+      "  sh /tmp/k3s_install/k3s.sh",
       "else",
       "  echo 'k3s 已安装，跳过安装'",
       "fi",
 
-      "# 等待k3s服务启动",
+      "echo '等待k3s服务启动'",
       "sleep 10"
     ]
   }
-}
-
-provider "kubernetes" {
-  config_path = "/home/runner/.kube/config"
 }
 
 resource "kubernetes_namespace" "app" {
