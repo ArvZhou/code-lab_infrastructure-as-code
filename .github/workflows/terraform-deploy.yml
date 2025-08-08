@@ -1,0 +1,46 @@
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      K3S_SERVER_IP: 114.218.145.161
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.5.7'
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Apply main.tf (install Docker and k3s)
+      run: terraform apply -auto-approve -target=null_resource.install_docker_k3s
+      env:
+        TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
+        TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
+    - name: Copy k3s kubeconfig
+      run: |
+        mkdir -p $HOME/.kube
+        scp -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }}:/etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+        sed -i "s/127.0.0.1/${{ env.K3S_SERVER_IP }}/g" $HOME/.kube/config
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
+    - name: Apply k8s_resources.tf (deploy MySQL and Redis)
+      run: terraform apply -auto-approve
+      env:
+        TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
+        TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        KUBECONFIG: $HOME/.kube/config
