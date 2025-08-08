@@ -16,8 +16,8 @@
 
 在GitHub仓库的Settings > Secrets and variables > Actions中添加以下Secrets：
 
-- `ssh_password`：远程Ubuntu服务器SSH密码。
-- `mysql_root_password`：MySQL数据库root用户密码。
+- `SSH_PASSWORD`：远程Ubuntu服务器SSH密码。
+- `MYSQL_ROOT_PASSWORD`：MySQL数据库root用户密码。
 
 ### 2. 触发部署
 

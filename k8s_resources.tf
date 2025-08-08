@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"  # 这里根据你的kubeconfig路径调整
+  config_path = "/home/runner/.kube/config"
 }
 
 resource "kubernetes_namespace" "app" {
