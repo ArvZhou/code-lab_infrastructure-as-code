@@ -47,6 +47,7 @@ resource "null_resource" "install_docker_k3s" {
 
   provisioner "remote-exec" {
     inline = [
+      "export DEBIAN_FRONTEND=noninteractive",
       "if ! command -v docker >/dev/null 2>&1; then",
       "  sudo apt-get update",
       "  sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
