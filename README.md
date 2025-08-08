@@ -53,6 +53,20 @@ kubectl port-forward svc/mysql 3306:3306 -n app
 mysql -h 127.0.0.1 -P 3306 -u root -p
 ```
 
+## 无密码 sudo 配置（用户名暂且叫 arvin）
+
+为了让用户 `arvin` 能够无密码执行部分管理命令，需要在远程服务器的 `/etc/sudoers.d/arvin-nopasswd` 文件中添加以下内容：
+
+```
+arvin ALL=(ALL) NOPASSWD: /usr/bin/apt-get, /usr/bin/systemctl
+```
+
+该配置允许 `arvin` 用户无密码执行 `apt-get` 和 `systemctl` 命令，方便自动化脚本运行。
+
+请确保该文件权限设置为 440，且文件放置在 `/etc/sudoers.d/` 目录下。
+
+示例文件已包含在项目中，Terraform 脚本会自动上传并应用该配置。
+
 ## 注意事项
 
 - k3s为轻量级Kubernetes，适合学习和小型生产环境。

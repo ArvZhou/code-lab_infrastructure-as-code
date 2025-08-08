@@ -1,2 +1,0 @@
-# 无密码sudo配置示例，仅允许arvin用户执行apt-get和systemctl命令无密码
-arvin ALL=(ALL) NOPASSWD: /usr/bin/apt-get, /usr/bin/systemctl
