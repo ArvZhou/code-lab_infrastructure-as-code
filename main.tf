@@ -13,6 +13,10 @@ terraform {
 
 provider "null" {}
 
+provider "kubernetes" {
+  config_path = pathexpand("/home/runner/.kube/config")
+}
+
 // 变量定义已移至 variables.tf
 # variable "ssh_password" {
 #   description = "SSH password for remote connection"
