@@ -63,4 +63,4 @@ jobs:
         TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
         TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         TF_VAR_ssh_host: ${{ secrets.K3S_SERVER_IP }}
-        KUBECONFIG: $HOME/.kube/config
+        KUBECONFIG: /home/runner/.kube/config
