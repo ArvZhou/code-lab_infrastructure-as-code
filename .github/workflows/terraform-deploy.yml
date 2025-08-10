@@ -32,11 +32,6 @@ jobs:
         TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         TF_VAR_ssh_host: ${{ secrets.K3S_SERVER_IP }}
 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.5.4
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
     - name: Install sshpass
       run: sudo apt-get update && sudo apt-get install -y sshpass
 
