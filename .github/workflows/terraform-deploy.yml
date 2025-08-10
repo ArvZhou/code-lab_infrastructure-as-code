@@ -35,10 +35,15 @@ jobs:
     - name: Install sshpass
       run: sudo apt-get update && sudo apt-get install -y sshpass
 
-    - name: Copy k3s kubeconfig
+    - name: Copy k3s kubeconfig to user directory
+      run: sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }} "sudo cp /etc/rancher/k3s/k3s.yaml /home/arvin/k3s.yaml && sudo chown arvin:arvin /home/arvin/k3s.yaml"
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
+    - name: Copy k3s kubeconfig to runner
       run: |
         mkdir -p $HOME/.kube
-        sshpass -p ${{ secrets.SSH_PASSWORD }} scp -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }}:/etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+        sshpass -p ${{ secrets.SSH_PASSWORD }} scp -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }}:/home/arvin/k3s.yaml $HOME/.kube/config
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
 
