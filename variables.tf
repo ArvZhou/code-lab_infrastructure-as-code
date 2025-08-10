@@ -9,3 +9,8 @@ variable "mysql_root_password" {
   type        = string
   sensitive   = true
 }
+
+variable "ssh_host" {
+  description = "SSH host IP address"
+  type        = string
+}

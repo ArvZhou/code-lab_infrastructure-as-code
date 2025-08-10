@@ -25,7 +25,7 @@ provider "null" {}
 resource "null_resource" "install_docker_k3s" {
   connection {
     type     = "ssh"
-    host     = "114.218.145.161"
+    host     = var.ssh_host
     user     = "arvin"
     password = var.ssh_password
   }

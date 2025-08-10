@@ -10,7 +10,8 @@ jobs:
     env:
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-      K3S_SERVER_IP: 114.218.145.161
+    #   K3S_SERVER_IP: 114.218.145.161
+      K3S_SERVER_IP: ${{ secrets.K3S_SERVER_IP }}
 
     steps:
     - name: Checkout code
@@ -30,10 +31,18 @@ jobs:
         TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
         TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Install sshpass
+      run: sudo apt-get update && sudo apt-get install -y sshpass
+
     - name: Copy k3s kubeconfig
       run: |
         mkdir -p $HOME/.kube
-        scp -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }}:/etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+        sshpass -p ${{ secrets.SSH_PASSWORD }} scp -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }}:/etc/rancher/k3s/k3s.yaml $HOME/.kube/config
         sed -i "s/127.0.0.1/${{ env.K3S_SERVER_IP }}/g" $HOME/.kube/config
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
@@ -43,4 +52,5 @@ jobs:
       env:
         TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
         TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        TF_VAR_mysql_ssh_host: ${{ secrets.K3S_SERVER_IP }}
         KUBECONFIG: $HOME/.kube/config
