@@ -38,7 +38,7 @@ jobs:
     - name: Copy k3s kubeconfig
       run: |
         mkdir -p $HOME/.kube
-        sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }} "sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config/k3s.yaml && sudo chown arvin:arvin $HOME/.kube/config/k3s.yaml"
+        sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }} "sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config"
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
 
