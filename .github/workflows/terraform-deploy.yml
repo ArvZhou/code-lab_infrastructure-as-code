@@ -10,7 +10,7 @@ jobs:
     env:
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-    #   K3S_SERVER_IP: 114.218.145.161
+      #   K3S_SERVER_IP: 114.218.145.161
       K3S_SERVER_IP: ${{ secrets.K3S_SERVER_IP }}
 
     steps:
@@ -49,8 +49,16 @@ jobs:
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
 
+    - name: Check kubeconfig content
+      run: |
+        echo "--- Kubeconfig file content ---"
+        cat $HOME/.kube/config
+        echo "-----------------------------"
+
     - name: Apply k8s_resources.tf (deploy MySQL and Redis)
-      run: terraform apply -auto-approve
+      run: |
+        echo "KUBECONFIG environment variable is set to: $KUBECONFIG"
+        terraform apply -auto-approve
       env:
         TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
         TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
