@@ -40,10 +40,10 @@ resource "null_resource" "install_docker_k3s" {
 #     ]
 #   }
 
-  provisioner "file" {
-    source      = "${path.module}/k3s.sh"
-    destination = "/tmp/k3s_install/k3s.sh"
-  }
+#   provisioner "file" {
+#     source      = "${path.module}/k3s.sh"
+#     destination = "/tmp/k3s_install/k3s.sh"
+#   }
 
   provisioner "remote-exec" {
     inline = [
@@ -51,10 +51,8 @@ resource "null_resource" "install_docker_k3s" {
       "if ! command -v docker >/dev/null 2>&1; then",
       "  sudo apt-get update",
       "  sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
-      "  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-      "  sudo add-apt-repository -y 'deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'",
       "  sudo apt-get update",
-      "  sudo apt-get install -y docker-ce",
+      "  sudo apt-get install -y docker.io",
       "  sudo systemctl start docker",
       "  sudo systemctl enable docker",
       "else",
@@ -62,7 +60,7 @@ resource "null_resource" "install_docker_k3s" {
       "fi",
 
       "if ! command -v k3s >/dev/null 2>&1; then",
-      "  sh /tmp/k3s_install/k3s.sh",
+      "  curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -",
       "else",
       "  echo 'k3s 已安装，跳过安装'",
       "fi",
