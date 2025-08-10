@@ -44,6 +44,8 @@ jobs:
       run: |
         mkdir -p $HOME/.kube
         sshpass -p ${{ secrets.SSH_PASSWORD }} scp -o StrictHostKeyChecking=no arvin@${{ env.K3S_SERVER_IP }}:/home/arvin/k3s.yaml $HOME/.kube/config
+        sed -i "s/127.0.0.1/${{ env.K3S_SERVER_IP }}/g" $HOME/.kube/config
+        sed -i "s/localhost/${{ env.K3S_SERVER_IP }}/g" $HOME/.kube/config
       env:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
 
