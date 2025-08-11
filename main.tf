@@ -79,15 +79,15 @@ resource "null_resource" "install_docker_k3s" {
   }
 }
 
-resource "kubernetes_namespace" "app" {
-  metadata {
-    name = "app"
-  }
+# resource "kubernetes_namespace" "app" {
+#   metadata {
+#     name = "app"
+#   }
 
-  lifecycle {
-    ignore_changes = [metadata[0].name]
-  }
-}
+#   lifecycle {
+#     ignore_changes = [metadata[0].name]
+#   }
+# }
 
 resource "kubernetes_deployment" "mysql" {
   metadata {

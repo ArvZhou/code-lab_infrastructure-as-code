@@ -26,7 +26,9 @@ jobs:
       run: terraform init
 
     - name: Apply main.tf (install Docker and k3s)
-      run: terraform apply -auto-approve -target=null_resource.install_docker_k3s
+      run: |
+        terraform apply -auto-approve -target=null_resource.install_docker_k3s
+        terraform import kubernetes_namespace.app app
       env:
         TF_VAR_ssh_password: ${{ secrets.SSH_PASSWORD }}
         TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
