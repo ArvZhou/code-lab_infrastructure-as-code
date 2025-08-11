@@ -6,8 +6,7 @@
 
 ## 目录结构
 
-- `main.tf`：负责远程安装Docker和k3s集群环境。
-- `k8s_resources.tf`：使用Kubernetes Provider管理MySQL和Redis的Kubernetes资源。
+- `main.tf`：负责远程安装Docker和k3s集群环境和使用Kubernetes Provider管理MySQL和Redis的Kubernetes资源。
 - `.github/workflows/terraform-deploy.yml`：GitHub Actions工作流，支持手动触发，分步执行Terraform部署。
 
 ## 使用说明
@@ -52,6 +51,39 @@ kubectl port-forward svc/mysql 3306:3306 -n app
 ```bash
 mysql -h 127.0.0.1 -P 3306 -u root -p
 ```
+
+## 国内镜像加速
+
+为了加快镜像拉取速度，推荐使用以下国内镜像加速地址：
+
+- https://docker.m.daocloud.io
+
+### 在 k3s 中配置镜像加速
+
+k3s 推荐使用 `registries.yaml` 文件配置镜像加速，配置文件路径为 `/etc/rancher/k3s/registries.yaml`。
+
+示例配置内容：
+
+```yaml
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://docker.m.daocloud.io"
+configs:
+  "https://docker.m.daocloud.io":
+    tls:
+      insecure_skip_verify: false
+```
+
+配置完成后，重启 k3s 服务使配置生效：
+
+```bash
+sudo systemctl restart k3s
+```
+
+这样 k3s 内置的 containerd 会优先使用配置的国内镜像加速地址，提高镜像拉取速度。
+
+---
 
 ## 无密码 sudo 配置（用户名暂且叫 arvin）
 

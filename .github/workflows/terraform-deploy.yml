@@ -56,7 +56,7 @@ jobs:
         cat $HOME/.kube/config
         echo "-----------------------------"
 
-    - name: Apply k8s_resources.tf (deploy MySQL and Redis)
+    - name: Apply main.tf (deploy MySQL and Redis)
       run: |
         echo "KUBECONFIG environment variable is set to: $KUBECONFIG"
         terraform apply -auto-approve
