@@ -56,7 +56,21 @@ mysql -h 127.0.0.1 -P 3306 -u root -p
 
 为了加快镜像拉取速度，推荐使用以下国内镜像加速地址：
 
-- https://docker.m.daocloud.io
+- docker.m.daocloud.io（正常）
+- docker.1ms.run（正常）
+- ccr.ccs.tencentyun.com（正常）
+- hub.xdark.top（正常）
+- hub.fast360.xyz（正常）
+- docker-0.unsee.tech（正常）
+- docker.xuanyuan.me（正常）
+- docker.tbedu.top（正常）
+- docker.hlmirror.com（正常）
+- doublezonline.cloud（正常）
+- docker.melikeme.cn（正常）
+- image.cloudlayer.icu（正常）
+- dislabaiot.xyz（正常）
+- freeno.xyz（正常）
+- docker.kejilion.pro（正常）
 
 ### 在 k3s 中配置镜像加速
 
@@ -69,8 +83,64 @@ mirrors:
   docker.io:
     endpoint:
       - "https://docker.m.daocloud.io"
+      - "https://docker.1ms.run"
+      - "https://ccr.ccs.tencentyun.com"
+      - "https://hub.xdark.top"
+      - "https://hub.fast360.xyz"
+      - "https://docker-0.unsee.tech"
+      - "https://docker.xuanyuan.me"
+      - "https://docker.tbedu.top"
+      - "https://docker.hlmirror.com"
+      - "https://doublezonline.cloud"
+      - "https://docker.melikeme.cn"
+      - "https://image.cloudlayer.icu"
+      - "https://dislabaiot.xyz"
+      - "https://freeno.xyz"
+      - "https://docker.kejilion.pro"
 configs:
   "https://docker.m.daocloud.io":
+    tls:
+      insecure_skip_verify: false
+  "https://docker.1ms.run":
+    tls:
+      insecure_skip_verify: false
+  "https://ccr.ccs.tencentyun.com":
+    tls:
+      insecure_skip_verify: false
+  "https://hub.xdark.top":
+    tls:
+      insecure_skip_verify: false
+  "https://hub.fast360.xyz":
+    tls:
+      insecure_skip_verify: false
+  "https://docker-0.unsee.tech":
+    tls:
+      insecure_skip_verify: false
+  "https://docker.xuanyuan.me":
+    tls:
+      insecure_skip_verify: false
+  "https://docker.tbedu.top":
+    tls:
+      insecure_skip_verify: false
+  "https://docker.hlmirror.com":
+    tls:
+      insecure_skip_verify: false
+  "https://doublezonline.cloud":
+    tls:
+      insecure_skip_verify: false
+  "https://docker.melikeme.cn":
+    tls:
+      insecure_skip_verify: false
+  "https://image.cloudlayer.icu":
+    tls:
+      insecure_skip_verify: false
+  "https://dislabaiot.xyz":
+    tls:
+      insecure_skip_verify: false
+  "https://freeno.xyz":
+    tls:
+      insecure_skip_verify: false
+  "https://docker.kejilion.pro":
     tls:
       insecure_skip_verify: false
 ```
