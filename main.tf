@@ -85,7 +85,7 @@ resource "kubernetes_namespace" "app" {
   }
 
   lifecycle {
-    ignore_changes = ["metadata[0].name"]
+    ignore_changes = [metadata[0].name]
   }
 }
 
@@ -141,7 +141,7 @@ resource "kubernetes_deployment" "mysql" {
   }
 
   lifecycle {
-    ignore_changes = ["spec[0].replicas"]
+    ignore_changes = [spec[0].replicas]
   }
 }
 
@@ -212,7 +212,7 @@ resource "kubernetes_deployment" "redis" {
   }
 
   lifecycle {
-    ignore_changes = ["spec[0].replicas"]
+    ignore_changes = [spec[0].replicas]
   }
 }
 
